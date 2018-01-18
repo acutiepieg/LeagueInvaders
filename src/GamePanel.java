@@ -11,7 +11,10 @@ import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Font titleFont;
+	Font startFont;
 	GameObject go;
+	Rocketship rs;
+	ObjectManager om;
 	Timer timer;
 	final int MENU_STATE = 0;
 	final int GAME_STATE = 1;
@@ -20,10 +23,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int currentState = MENU_STATE;
 
 	public GamePanel() {
+		rs = new Rocketship(250, 700, 50, 50);
+om = new ObjectManager(rs);
 		timer = new Timer(1000 / 60, this);
 		go = new GameObject(100, 100, 100, 100);
 		titleFont = new Font("Arial", Font.PLAIN, 48);
-		
+		startFont = new Font("Arial", Font.PLAIN, 28);
+
 	}
 
 	public void startGame() {
@@ -73,13 +79,35 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			} else if (currentState == END_STATE) {
 				currentState = MENU_STATE;
 			}
+
 		}
-	}
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			rs.right = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			rs.left = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+			rs.up = true;
+		}  else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			rs.down = true;
+		}
+	
+	} 	
+	
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 
+			rs.right = false;
+
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			rs.left = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+			rs.up = false;
+		}else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			rs.down = false;
+		}
 	}
 
 	public void updateMenuState() {
@@ -87,7 +115,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void updateGameState() {
-
+om.update();
+		
 	}
 
 	public void updateEndState() {
@@ -99,16 +128,26 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, LeagueInvaders.wWidth, LeagueInvaders.wHeight);
 		g.setFont(titleFont);
 		g.setColor(Color.WHITE);
-		g.drawString("League Invaders", 75, 200 );
+		g.drawString("League Invaders", 75, 200);
+		g.setFont(startFont);
+		g.drawString("Press ENTER to start", 115, 320);
+		g.drawString("Press SPACE to get instructions", 49, 440);
 	}
 
 	public void drawGameState(Graphics g) {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, LeagueInvaders.wWidth, LeagueInvaders.wHeight);
+		om.draw(g);
 	}
 
 	public void drawEndState(Graphics g) {
 		g.setColor(Color.RED);
 		g.fillRect(0, 0, LeagueInvaders.wWidth, LeagueInvaders.wHeight);
+		g.setFont(titleFont);
+		g.setColor(Color.BLACK);
+		g.drawString("GAME OVER", 100, 200);
+		g.setFont(startFont);
+		g.drawString("You killed 0 enemies", 115, 320);
+		g.drawString("Press ENTER to restart", 110, 440);
 	}
 }

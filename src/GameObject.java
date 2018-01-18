@@ -5,21 +5,22 @@ public class GameObject {
 	int y;
 	int width;
 	int height;
+	boolean isAlive;
 
 	public GameObject(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		isAlive = true;
 	}
 
 	public void update() {
-		x ++;
-		y ++;
+
 	}
-	
+
 	public void draw(Graphics draw) {
-		draw.fillRect(x, y, width, height);   
+
 	}
 
 }

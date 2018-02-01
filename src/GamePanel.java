@@ -120,7 +120,7 @@ om = new ObjectManager(rs);
 
 	public void updateGameState() {
 om.update();
-		
+		om.manageEnemies();
 	}
 
 	public void updateEndState() {

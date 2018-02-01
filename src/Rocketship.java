@@ -19,7 +19,8 @@ int speed;
 	}
 
 	public void update() {
-	if(right == true) {
+	super.update();
+		if(right == true) {
 	x += speed;
 }
 else if(left == true) {

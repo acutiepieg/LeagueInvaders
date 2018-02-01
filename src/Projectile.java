@@ -11,7 +11,8 @@ public class Projectile extends GameObject {
 	}
 
 	public void update() {
-y -= speed;
+super.update();
+		y -= speed;
 if(y <= 0) {
 	isAlive = false;
 }

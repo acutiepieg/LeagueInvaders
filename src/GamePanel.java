@@ -5,11 +5,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
+
+	public static BufferedImage alienImg;
+	public static BufferedImage rocketImg;
+	public static BufferedImage bulletImg;
 	Font titleFont;
 	Font startFont;
 	GameObject go;
@@ -24,12 +31,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	public GamePanel() {
 		rs = new Rocketship(250, 700, 50, 50);
-om = new ObjectManager(rs);
+		om = new ObjectManager(rs);
 		timer = new Timer(1000 / 60, this);
 		go = new GameObject(100, 100, 100, 100);
 		titleFont = new Font("Arial", Font.PLAIN, 48);
 		startFont = new Font("Arial", Font.PLAIN, 28);
 
+		try {
+			alienImg = ImageIO.read(this.getClass().getResourceAsStream("alien.png.webloc"));
+			rocketImg = ImageIO.read(this.getClass().getResourceAsStream("rocket.png.webloc"));
+			bulletImg = ImageIO.read(this.getClass().getResourceAsStream("bullet.png.webloc"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void startGame() {
@@ -77,6 +92,8 @@ om = new ObjectManager(rs);
 			} else if (currentState == GAME_STATE) {
 				currentState = END_STATE;
 			} else if (currentState == END_STATE) {
+				rs = new Rocketship(250, 700, 50, 50);
+				om = new ObjectManager(rs);
 				currentState = MENU_STATE;
 			}
 
@@ -87,16 +104,15 @@ om = new ObjectManager(rs);
 			rs.left = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
 			rs.up = true;
-		}  else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			rs.down = true;
 		}
-	
-		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-			om.addProjectile(new Projectile(rs.x + rs.width/2,rs.y,10,10));
+
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			om.addProjectile(new Projectile(rs.x + rs.width / 2, rs.y, 10, 10));
 		}
-	
-	} 	
-	
+
+	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -109,7 +125,7 @@ om = new ObjectManager(rs);
 			rs.left = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
 			rs.up = false;
-		}else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			rs.down = false;
 		}
 	}
@@ -119,8 +135,14 @@ om = new ObjectManager(rs);
 	}
 
 	public void updateGameState() {
-om.update();
+		om.update();
 		om.manageEnemies();
+		om.checkCollision();
+		om.purgeObjects();
+
+		if (rs.isAlive == false) {
+			currentState = END_STATE;
+		}
 	}
 
 	public void updateEndState() {
@@ -151,7 +173,7 @@ om.update();
 		g.setColor(Color.BLACK);
 		g.drawString("GAME OVER", 100, 200);
 		g.setFont(startFont);
-		g.drawString("You killed 0 enemies", 115, 320);
+		g.drawString("You killed " + om.getScore(om.score) + " enemies", 115, 320);
 		g.drawString("Press ENTER to restart", 110, 440);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Random;
 public class ObjectManager {
 
 	Rocketship ship;
+	int score;
 
 	long enemyTimer = 0;
 	int enemySpawnTime = 1000;
@@ -22,6 +23,7 @@ public class ObjectManager {
 
 	ObjectManager(Rocketship ship) {
 		this.ship = ship;
+		score = 0;
 	}
 
 	public void update() {
@@ -53,19 +55,20 @@ public class ObjectManager {
 	}
 
 	public void purgeObjects() {
-		for (Alien a : alien) {
-			if (a.isAlive == false) {
-				alien.remove(a);
+		for (int i = 0; i < project.size(); i++ ) {
+			if(project.get(i).isAlive == false) {
+				project.remove(i);
 			}
 		}
-		for (Projectile p : project) {
-			if (p.isAlive == false) {
-				project.remove(p);
-			}
+		
+		for (int i = 0; i < alien.size(); i++) {
+		if(alien.get(i).isAlive == false) {
+			alien.remove(i);
 		}
-
-	}
-
+		}
+			
+		}
+	
 	public void checkCollision() {
 		for (Alien a : alien) {
 			if (ship.collisionBox.intersects(a.collisionBox)) {
@@ -75,11 +78,16 @@ public class ObjectManager {
 			for (Projectile p : project) {
 				if (a.collisionBox.intersects(p.collisionBox)) {
 					a.isAlive = false;
-		
+					score ++;
 		}
 	
 			}
 		}
+	}
+	
+	public int getScore(int score) {
+		return score;
+		
 	}
 
 }

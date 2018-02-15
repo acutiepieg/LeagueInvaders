@@ -34,7 +34,7 @@ else if(down == true) {
 }
 	}
 	public void draw(Graphics g) {
-		 g.drawImage(GamePanel.rocketImg, x, y, width, height, null);
+		g.drawImage(GamePanel.rocketImg, x, y, width, height, null);
 
 	}
 

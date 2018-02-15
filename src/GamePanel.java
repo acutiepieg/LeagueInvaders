@@ -38,9 +38,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		startFont = new Font("Arial", Font.PLAIN, 28);
 
 		try {
-			alienImg = ImageIO.read(this.getClass().getResourceAsStream("alien.png.webloc"));
-			rocketImg = ImageIO.read(this.getClass().getResourceAsStream("rocket.png.webloc"));
-			bulletImg = ImageIO.read(this.getClass().getResourceAsStream("bullet.png.webloc"));
+			alienImg = ImageIO.read(this.getClass().getResourceAsStream("alien.png"));
+			rocketImg = ImageIO.read(this.getClass().getResourceAsStream("rocket.png"));
+			bulletImg = ImageIO.read(this.getClass().getResourceAsStream("bullet.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

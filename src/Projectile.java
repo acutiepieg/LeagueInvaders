@@ -19,8 +19,7 @@ if(y <= 0) {
 	}
 
 	public void draw(Graphics g) {
-g.setColor(Color.red);
-g.drawRect(x, y, width, height);
+		g.drawImage(GamePanel.bulletImg, x, y, width, height, null);
 	}
 
 }

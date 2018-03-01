@@ -8,7 +8,7 @@ public class ObjectManager {
 	int score;
 
 	long enemyTimer = 0;
-	int enemySpawnTime = 1000;
+	int enemySpawnTime = 750;
 
 	ArrayList<Projectile> project = new ArrayList<Projectile>();
 	ArrayList<Alien> alien = new ArrayList<Alien>();
@@ -66,6 +66,12 @@ public class ObjectManager {
 			alien.remove(i);
 		}
 		}
+		
+		for (int i = 0; i < project.size(); i++) {
+			if(project.get(i).isAlive == false) {
+				project.remove(i);
+			}
+		}
 			
 		}
 	
@@ -78,6 +84,7 @@ public class ObjectManager {
 			for (Projectile p : project) {
 				if (a.collisionBox.intersects(p.collisionBox)) {
 					a.isAlive = false;
+					p.isAlive = false;
 					score ++;
 		}
 	
